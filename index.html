@@ -237,7 +237,7 @@ dialog::backdrop{background:rgba(21,26,31,.5)}
 
 <!-- ustawienia -->
 <dialog id="dlgCfg"><div class="grab"></div><div class="sheet">
-  <h2>Ustawienia</h2>
+  <h2>Ustawienia <span style="font-size:12px;color:var(--muted);font-weight:600">wersja 3</span></h2>
   <label for="fName">Imię i nazwisko (na wydruku)</label>
   <input id="fName" placeholder="np. Jan Kowalski" autocomplete="name">
   <label>Twoje standardowe godziny</label>
@@ -566,7 +566,9 @@ $("fImport").onchange=ev=>{
 $("prev").onclick=()=>{ view=new Date(view.getFullYear(),view.getMonth()-1,1); selected.clear(); render(); updateDock(); };
 $("next").onclick=()=>{ view=new Date(view.getFullYear(),view.getMonth()+1,1); selected.clear(); render(); updateDock(); };
 load(); render(); updateDock();
-if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js").then(r=>r.update()).catch(()=>{});
+}
 </script>
 </body>
 </html>
