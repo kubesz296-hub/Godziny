@@ -13,7 +13,7 @@
 :root{
   --bar:#1D2329; --surface:#F2F4F6; --card:#FFF;
   --ink:#151A1F; --muted:#6A747E; --hair:#E3E7EB;
-  --mark:#F2B705;
+  --mark:#F2B705; --ot:#B98200;
   --work:#12813F; --workbg:#E6F3EA;
   --urlop:#1B63C4; --urlopbg:#E3EDFB;
   --sick:#C2600E; --sickbg:#FBEEE0;
@@ -45,36 +45,33 @@ input{-webkit-user-select:text;user-select:text}
 .mbar button:active{background:#E2E6EA}
 .mbar .mid{flex:1;text-align:center}
 .mbar .m{font-weight:800;font-size:17px}
-.mbar .s{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:2px}
+.mbar .s{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:2px;width:100%}
 
 .cal{
   flex:1;overflow-y:auto;background:var(--card);margin:6px 12px 0;
-  border-radius:18px 18px 0 0;box-shadow:0 1px 3px rgba(20,26,32,.1);
-  padding:10px 10px 4px;
+  border-radius:18px 18px 0 0;box-shadow:0 1px 3px rgba(20,26,32,.1);padding:10px 10px 4px;
 }
 .dows{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:5px}
-.dows div{text-align:center;font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.dows div{text-align:center;font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase}
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
 .cell{
-  aspect-ratio:1/1.06;border-radius:11px;background:#F4F6F8;
+  position:relative;aspect-ratio:1/1.06;border-radius:11px;background:#F4F6F8;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
   border:2px solid transparent;padding:2px;
 }
 .cell.pad{background:transparent}
 .cell .n{font-size:15px;font-weight:700;line-height:1}
 .cell .v{font-size:9.5px;font-weight:700;line-height:1;color:var(--muted)}
+.cell .otb{position:absolute;top:3px;right:5px;font-size:8.5px;font-weight:800;color:var(--ot)}
 .cell.we{background:#EBEEF1}
-.cell.w{background:var(--workbg)} .cell.w .n{color:var(--work)} .cell.w .v{color:var(--work)}
-.cell.u{background:var(--urlopbg)} .cell.u .n{color:var(--urlop)} .cell.u .v{color:var(--urlop)}
-.cell.c{background:var(--sickbg)} .cell.c .n{color:var(--sick)} .cell.c .v{color:var(--sick)}
-.cell{position:relative}
-.cell .ot{position:absolute;top:3px;right:5px;font-size:8.5px;font-weight:800;color:#B98200}
-.cell.sel .ot{color:var(--mark)}
+.cell.w{background:var(--workbg)} .cell.w .n,.cell.w .v{color:var(--work)}
+.cell.u{background:var(--urlopbg)} .cell.u .n,.cell.u .v{color:var(--urlop)}
+.cell.c{background:var(--sickbg)} .cell.c .n,.cell.c .v{color:var(--sick)}
 .cell.today{border-color:var(--mark)}
 .cell.sel{border-color:var(--bar);background:var(--bar)}
-.cell.sel .n,.cell.sel .v{color:#fff}
+.cell.sel .n,.cell.sel .v{color:#fff} .cell.sel .otb{color:var(--mark)}
 .cell:active{filter:brightness(.94)}
-.legend{display:flex;gap:14px;justify-content:center;padding:12px 4px 8px;font-size:11.5px;color:var(--muted);font-weight:600}
+.legend{display:flex;gap:13px;justify-content:center;padding:12px 4px 8px;font-size:11.5px;color:var(--muted);font-weight:600}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px}
 
 .dock{
@@ -82,9 +79,21 @@ input{-webkit-user-select:text;user-select:text}
   margin:0 12px;border-radius:0 0 18px 18px;box-shadow:0 1px 3px rgba(20,26,32,.1);
   padding:10px 12px calc(12px + env(safe-area-inset-bottom));
 }
-.dock button{flex:1;padding:16px 8px;border-radius:13px;font-weight:800;letter-spacing:.03em;background:#EEF1F4}
+.dock button{flex:1;padding:16px 8px;border-radius:13px;font-weight:800;background:#EEF1F4}
 .dock button.main{background:var(--bar);color:#fff}
 .dock button:active{filter:brightness(.93)}
+
+.snack{
+  position:fixed;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom));
+  background:var(--bar);color:#fff;border-radius:14px;padding:12px 8px 12px 15px;
+  display:flex;align-items:center;gap:6px;z-index:20;
+  opacity:0;transform:translateY(10px);pointer-events:none;transition:.18s;
+  box-shadow:0 6px 20px rgba(20,26,32,.3);
+}
+.snack.on{opacity:1;transform:none;pointer-events:auto}
+.snack span{flex:1;font-size:14px;font-weight:600;line-height:1.25}
+.snack button{color:var(--mark);font-weight:800;font-size:13px;padding:9px 10px;border-radius:9px}
+.snack button:active{background:#2E363E}
 
 dialog{
   border:0;padding:0;width:100%;max-width:520px;margin:auto auto 0;background:var(--card);
@@ -94,49 +103,57 @@ dialog{
 dialog::backdrop{background:rgba(21,26,31,.5)}
 .grab{width:38px;height:4px;background:var(--hair);border-radius:2px;margin:10px auto 4px}
 .sheet{padding:6px 16px calc(16px + env(safe-area-inset-bottom))}
-.sheet h2{font-size:17px;margin:6px 0 4px}
+.sheet h2{font-size:17px;margin:6px 0 2px}
 .sheet .cap{font-size:13px;color:var(--muted);margin:0 0 12px}
-.opt{
-  width:100%;display:flex;align-items:center;gap:12px;padding:15px 14px;margin-bottom:8px;
-  border-radius:13px;background:#F4F6F8;text-align:left;font-weight:700;
-}
-.opt:active{filter:brightness(.94)}
-.opt b{display:block;font-size:15.5px}
-.opt small{display:block;font-weight:600;color:var(--muted);font-size:12.5px;margin-top:2px}
-.opt .ico{width:34px;height:34px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800}
-.i-w{background:var(--workbg);color:var(--work)}
-.i-r{background:#EEF1F4;color:var(--bar)}
-.i-u{background:var(--urlopbg);color:var(--urlop)}
-.i-c{background:var(--sickbg);color:var(--sick)}
-.i-x{background:#FDF0EE;color:#C0392B}
-.sheet label{display:block;font-size:11.5px;color:var(--muted);margin:12px 0 5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+.sheet label{display:block;font-size:11.5px;color:var(--muted);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
 .sheet input,.sheet select{width:100%;padding:13px;border:1px solid var(--hair);border-radius:12px;background:#FAFBFC}
+
+.seg{display:flex;gap:6px;background:#EEF1F4;padding:5px;border-radius:14px;margin-top:8px}
+.seg button{flex:1;padding:12px 4px;border-radius:10px;font-weight:700;font-size:14.5px;color:var(--muted)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,26,32,.16)}
+.seg button.on[data-t="u"]{color:var(--urlop)}
+.seg button.on[data-t="c"]{color:var(--sick)}
+
 .times{display:flex;gap:10px}.times>div{flex:1}
+.calc{margin-top:9px;font-size:14px;font-weight:700;text-align:center;color:var(--work)}
+.calc b{color:var(--ot)}
 .chiprow{display:flex;flex-wrap:wrap;gap:8px}
 .chip{padding:9px 13px;border-radius:20px;background:#EEF1F4;font-size:14px;font-weight:600}
 .chip.on{background:var(--bar);color:#fff}
-.acts{display:flex;gap:9px;margin-top:16px}
+.oneoff{display:flex;gap:8px;margin-top:9px}
+.oneoff input{flex:1}
+.oneoff button{flex:none;padding:0 14px;border-radius:12px;background:#EEF1F4;font-weight:700;font-size:13px}
+.hint{font-size:11.5px;color:var(--muted);margin-top:6px}
+.acts{display:flex;gap:9px;margin-top:18px}
 .acts button{flex:1;padding:15px 8px;border-radius:12px;font-weight:700;background:#EEF1F4}
 .acts .main{background:var(--bar);color:#fff}
-.hide{display:none}
+.acts .del{background:#FDF0EE;color:#C0392B}
+.opt{
+  width:100%;display:flex;align-items:center;gap:12px;padding:15px 14px;
+  border-radius:13px;background:#F4F6F8;text-align:left;font-weight:700;
+}
+.opt b{display:block;font-size:15px}
+.opt small{display:block;font-weight:600;color:var(--muted);font-size:12.5px;margin-top:2px}
+.opt .ico{width:34px;height:34px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;background:var(--workbg);color:var(--work)}
+.opt .ico.x{background:#FDF0EE;color:#C0392B}
+.hide{display:none!important}
 .toast{
   position:fixed;left:50%;bottom:100px;transform:translate(-50%,8px);background:var(--bar);color:#fff;
-  padding:12px 20px;border-radius:24px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:9
+  padding:12px 20px;border-radius:24px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:30
 }
 .toast.on{opacity:1;transform:translate(-50%,0)}
 
 #sheet{display:none}
 @media print{
-  @page{size:A4 portrait;margin:9mm 9mm}
+  @page{size:A4 portrait;margin:9mm}
   body{display:block;height:auto;background:#fff}
-  .appbar,.mbar,.cal,.dock,.toast,.legend{display:none!important}
+  .appbar,.mbar,.cal,.dock,.toast,.snack,.legend{display:none!important}
   #sheet{display:block}
   #sheet h2{margin:0 0 1.5mm;font-size:13pt;letter-spacing:.04em}
   .meta{display:flex;justify-content:space-between;font-size:9pt;margin-bottom:2mm}
-  table{width:100%;border-collapse:collapse;font-size:8.4pt;page-break-inside:auto}
-  tr{page-break-inside:avoid;page-break-after:auto}
+  table{width:100%;border-collapse:collapse;font-size:8.4pt}
+  tr{page-break-inside:avoid}
   thead{display:table-header-group}
-  tfoot{display:table-row-group}
   th,td{border:.4pt solid #555;padding:.7mm 1.2mm;height:5.1mm;line-height:1.1}
   th{background:#E1E4E8!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:8pt}
   tr.we td{background:#F1F3F5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -150,13 +167,13 @@ dialog::backdrop{background:rgba(21,26,31,.5)}
 
 <div class="appbar">
   <div class="dot"></div>
-  <h1 id="appTitle">Godziny pracy</h1>
+  <h1>Godziny pracy</h1>
   <button id="btnCfg" aria-label="Ustawienia">⚙</button>
 </div>
 
 <div class="mbar">
   <button id="prev" aria-label="Poprzedni miesiąc">‹</button>
-  <div class="mid"><div class="m" id="mLabel"></div><button class="s" id="mSum" style="width:100%"></button></div>
+  <div class="mid"><div class="m" id="mLabel"></div><button class="s" id="mSum"></button></div>
   <button id="next" aria-label="Następny miesiąc">›</button>
 </div>
 
@@ -167,7 +184,7 @@ dialog::backdrop{background:rgba(21,26,31,.5)}
     <span><i style="background:var(--work)"></i>praca</span>
     <span><i style="background:var(--urlop)"></i>urlop</span>
     <span><i style="background:var(--sick)"></i>chorobowe</span>
-    <span><i style="background:#B98200"></i>nadg.</span>
+    <span><i style="background:var(--ot)"></i>nadg.</span>
   </div>
 </div>
 
@@ -176,48 +193,52 @@ dialog::backdrop{background:rgba(21,26,31,.5)}
   <button class="main" id="btnPrint">DRUKUJ</button>
 </div>
 
+<div class="snack" id="snack">
+  <span id="snackT"></span>
+  <button id="snackEdit">ZMIEŃ</button>
+  <button id="snackUndo">COFNIJ</button>
+</div>
 <div class="toast" id="toast"></div>
 
-<!-- opcje dnia / zaznaczonych dni -->
 <dialog id="dlgDay"><div class="grab"></div><div class="sheet">
   <h2 id="dlgTitle"></h2>
   <p class="cap" id="dlgCap"></p>
 
-  <div id="optBox">
-    <button class="opt" id="oUsual"><span class="ico i-w">✓</span><span><b id="oUsualT"></b><small id="oUsualS"></small></span></button>
-    <button class="opt" id="oLast"><span class="ico i-r">↺</span><span><b>Jak ostatnio</b><small id="oLastS"></small></span></button>
-    <button class="opt" id="oU"><span class="ico i-u">U</span><span><b>Urlop</b><small>dzień wolny płatny</small></span></button>
-    <button class="opt" id="oC"><span class="ico i-c">CH</span><span><b>Chorobowe</b><small>zwolnienie lekarskie</small></span></button>
-    <button class="opt" id="oManual"><span class="ico i-r">✎</span><span><b>Wpisz ręcznie</b><small>inne godziny lub budowa</small></span></button>
-    <button class="opt" id="oClear"><span class="ico i-x">✕</span><span><b>Wyczyść</b><small>dzień bez wpisu</small></span></button>
+  <div class="seg" id="seg">
+    <button data-t="w">Praca</button>
+    <button data-t="u">Urlop</button>
+    <button data-t="c">Chorobowe</button>
   </div>
 
-  <div id="manBox" class="hide">
-    <div class="times">
-      <div><label for="fS">Od</label><input type="time" id="fS"></div>
-      <div><label for="fE">Do</label><input type="time" id="fE"></div>
+  <div id="workBox">
+    <div class="times" style="margin-top:14px">
+      <div><label for="fS" style="margin-top:0">Od</label><input type="time" id="fS"></div>
+      <div><label for="fE" style="margin-top:0">Do</label><input type="time" id="fE"></div>
     </div>
+    <div class="calc" id="calc"></div>
     <label>Miejsce pracy</label>
     <div class="chiprow" id="chips"></div>
-    <input id="fP" placeholder="lub wpisz inne" style="margin-top:9px">
-    <div class="acts">
-      <button id="manBack">Wróć</button>
-      <button class="main" id="manSave">Zapisz</button>
+    <div class="oneoff">
+      <input id="fP" placeholder="inne miejsce — tylko ten dzień">
+      <button id="addToList">＋ lista</button>
     </div>
+    <div class="hint">Wpisane tu miejsce nie trafia na listę, chyba że dotkniesz „＋ lista".</div>
   </div>
 
-  <div class="acts" id="dayFoot"><button id="dayClose">Zamknij</button></div>
+  <div class="acts">
+    <button class="del" id="dayDel">Wyczyść</button>
+    <button id="dayCancel">Anuluj</button>
+    <button class="main" id="daySave">Zapisz</button>
+  </div>
 </div></dialog>
 
-<!-- nadgodziny -->
 <dialog id="dlgOt"><div class="grab"></div><div class="sheet">
   <h2 id="otTitle">Nadgodziny</h2>
   <p class="cap" id="otCap"></p>
-  <div id="otList" style="max-height:46dvh;overflow-y:auto"></div>
+  <div id="otList" style="max-height:44dvh;overflow-y:auto"></div>
   <div class="acts"><button class="main" id="otClose">Zamknij</button></div>
 </div></dialog>
 
-<!-- wydruk -->
 <dialog id="dlgPrint"><div class="grab"></div><div class="sheet">
   <h2>Wydruk miesiąca</h2>
   <label for="fRound">Zaokrąglanie godzin</label>
@@ -235,16 +256,13 @@ dialog::backdrop{background:rgba(21,26,31,.5)}
   <div class="acts"><button id="prCancel">Anuluj</button><button class="main" id="prGo">Drukuj</button></div>
 </div></dialog>
 
-<!-- ustawienia -->
 <dialog id="dlgCfg"><div class="grab"></div><div class="sheet">
-  <h2>Ustawienia <span style="font-size:12px;color:var(--muted);font-weight:600">wersja 3</span></h2>
+  <h2>Ustawienia</h2>
+  <p class="cap">Wersja 5</p>
   <label for="fName">Imię i nazwisko (na wydruku)</label>
   <input id="fName" placeholder="np. Jan Kowalski" autocomplete="name">
-  <label>Twoje standardowe godziny</label>
-  <div class="times">
-    <div><input type="time" id="fDS"></div>
-    <div><input type="time" id="fDE"></div>
-  </div>
+  <label>Standardowe godziny (wpisywane po dotknięciu dnia)</label>
+  <div class="times"><div><input type="time" id="fDS"></div><div><input type="time" id="fDE"></div></div>
   <label>Miejsca pracy <span style="text-transform:none;letter-spacing:0">(dotknij, by ustawić domyślne)</span></label>
   <div class="chiprow" id="cfgChips"></div>
   <div class="acts" style="margin-top:10px">
@@ -257,18 +275,16 @@ dialog::backdrop{background:rgba(21,26,31,.5)}
     <div style="flex:2;display:flex;align-items:center;font-size:13px;color:var(--muted);padding-left:4px">godzin dziennie to norma</div>
   </div>
   <button class="opt" id="fWk" style="margin-top:9px">
-    <span class="ico i-w" id="fWkIco">✓</span>
+    <span class="ico" id="fWkIco">✓</span>
     <span><b>Weekend w całości jako nadgodziny</b><small id="fWkS"></small></span>
   </button>
-
   <label>Szybkie uzupełnianie</label>
-  <button class="opt" id="fillMonth" style="margin:0">
-    <span class="ico i-w">⚡</span><span><b>Uzupełnij pon–pt w tym miesiącu</b><small id="fillMonthS"></small></span>
-  </button>
+  <button class="opt" id="fillMonth"><span class="ico">⚡</span>
+    <span><b>Uzupełnij pon–pt w tym miesiącu</b><small id="fillMonthS"></small></span></button>
   <label>Kopia danych</label>
   <div class="acts" style="margin-top:0">
     <button id="doExport">Zapisz kopię</button>
-    <button onclick="document.getElementById('fImport').click()">Wczytaj kopię</button>
+    <button id="btnImport">Wczytaj kopię</button>
   </div>
   <input type="file" id="fImport" accept=".json,application/json" class="hide">
   <div class="acts"><button class="main" id="cfgClose">Gotowe</button></div>
@@ -283,21 +299,22 @@ const DOW=["pon","wt","śr","czw","pt","sob","nd"];
 const KEY="godziny_pracy_v1";
 
 let db={ name:"", places:["Budowa A"], def:{s:"07:00",e:"15:00",p:""},
-          ot:{norm:480, weekend:true}, entries:{} };
+         ot:{norm:480,weekend:true}, entries:{} };
 let view=new Date(); view.setDate(1);
-let selectMode=false, selected=new Set(), target=[], pickedPlace="", cfgPick="";
+let selectMode=false, selected=new Set();
+let target=[], type="w", pickedPlace="", cfgPick="", undoData=null, undoTimer=null;
 
 const $=i=>document.getElementById(i);
 const pad=n=>String(n).padStart(2,"0");
 const key=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const dateOf=k=>new Date(k+"T12:00");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const toMin=t=>t?+t.split(":")[0]*60 + +t.split(":")[1]:null;
 const fromMin=m=>pad(Math.floor(m/60)%24)+":"+pad(m%60);
 const roundT=(t,s)=>t&&s?fromMin(Math.round(toMin(t)/s)*s):t;
 const hm=m=>Math.floor(m/60)+":"+pad(m%60);
 function span(s,e){ if(!s||!e) return 0; let m=toMin(e)-toMin(s); if(m<0)m+=1440; return m; }
-function isWe(date){ return (date.getDay()+6)%7>=5; }
-/** dzieli czas dnia na zwykły i nadgodziny */
+const isWe=d=>(d.getDay()+6)%7>=5;
 function split(mins,date){
   if(!mins) return {tot:0,norm:0,ot:0};
   if(db.ot.weekend && isWe(date)) return {tot:mins,norm:0,ot:mins};
@@ -308,7 +325,7 @@ function split(mins,date){
 function load(){
   try{ const r=localStorage.getItem(KEY); if(r) db=Object.assign(db,JSON.parse(r)); }catch(e){}
   if(!db.def) db.def={s:"07:00",e:"15:00",p:""};
-  if(!db.ot) db.ot={norm:480, weekend:true};
+  if(!db.ot) db.ot={norm:480,weekend:true};
   if(!db.def.p) db.def.p=db.places[0]||"";
   Object.values(db.entries).forEach(e=>{ if(!e.t) e.t="w"; });
 }
@@ -326,114 +343,166 @@ function render(){
 
   for(let i=0;i<lead;i++) html+=`<div class="cell pad"></div>`;
   for(let d=1;d<=days;d++){
-    const date=new Date(y,m,d), k=key(date), w=(date.getDay()+6)%7>=5;
-    const e=db.entries[k]; let cls="", val="";
-    let badge="";
+    const date=new Date(y,m,d), k=key(date);
+    const e=db.entries[k]; let cls="", val="", badge="";
     if(e&&e.t==="w"){
-      const t=span(e.s,e.e); const sp=split(t,date);
+      const t=span(e.s,e.e), sp=split(t,date);
       mins+=t; otMins+=sp.ot; wd++; cls="w"; val=t?hm(t):"?";
-      if(sp.ot) badge=`<span class="ot">+${hm(sp.ot)}</span>`;
+      if(sp.ot) badge=`<span class="otb">+${hm(sp.ot)}</span>`;
     }
     else if(e&&e.t==="u"){ ud++; cls="u"; val="urlop"; }
     else if(e&&e.t==="c"){ cd++; cls="c"; val="chor."; }
-    else if(w) cls="we";
+    else if(isWe(date)) cls="we";
     html+=`<button class="cell ${cls}${k===tk?" today":""}${selected.has(k)?" sel":""}" data-k="${k}">
       ${badge}<span class="n">${d}</span><span class="v">${val}</span></button>`;
   }
   $("grid").innerHTML=html;
   $("mLabel").textContent=`${MONTHS[m]} ${y}`;
-  $("mSum").innerHTML=`${hm(mins)} h · ${wd} dni` + (otMins?` · <b style="color:#B98200">nadg. ${hm(otMins)}</b>`:"")
+  $("mSum").innerHTML=`${hm(mins)} h · ${wd} dni`
+    + (otMins?` · <b style="color:var(--ot)">nadg. ${hm(otMins)}</b>`:"")
     + (ud?` · ${ud} urlop`:"") + (cd?` · ${cd} chor.`:"");
   $("grid").querySelectorAll(".cell[data-k]").forEach(c=>c.onclick=()=>tap(c.dataset.k));
 }
 
+/* ---------- dotknięcie dnia ---------- */
+function lastEntry(beforeKey){
+  const ks=Object.keys(db.entries).filter(k=>db.entries[k].t==="w").sort();
+  if(!ks.length) return null;
+  const before=ks.filter(k=>k<beforeKey);
+  const k=before.length?before[before.length-1]:ks[ks.length-1];
+  return db.entries[k];
+}
 function tap(k){
   if(selectMode){
     selected.has(k)?selected.delete(k):selected.add(k);
-    render(); updateDock();
-  }else{
-    openSheet([k]);
+    render(); updateDock(); return;
   }
+  if(db.entries[k]){ openDay([k]); return; }
+  quickFill(k);
 }
+function quickFill(k){
+  const prev=lastEntry(k);
+  const place=(prev&&prev.p)||db.def.p||"";
+  undoData={k, before:null};
+  db.entries[k]={t:"w", s:db.def.s, e:db.def.e, p:place};
+  save(); render();
+  const d=dateOf(k);
+  showSnack(`${pad(d.getDate())}.${pad(d.getMonth()+1)}: ${db.def.s}–${db.def.e}${place?" · "+place:""}`);
+}
+function showSnack(txt){
+  $("snackT").textContent=txt;
+  $("snack").classList.add("on");
+  clearTimeout(undoTimer);
+  undoTimer=setTimeout(()=>$("snack").classList.remove("on"),5000);
+}
+$("snackUndo").onclick=()=>{
+  if(!undoData) return;
+  if(undoData.before) db.entries[undoData.k]=undoData.before; else delete db.entries[undoData.k];
+  undoData=null; save(); render(); $("snack").classList.remove("on");
+};
+$("snackEdit").onclick=()=>{
+  const k=undoData&&undoData.k;
+  $("snack").classList.remove("on");
+  if(k) openDay([k]);
+};
+
 function updateDock(){
   if(selectMode){
     $("btnSelect").textContent="ANULUJ";
-    const b=$("btnPrint"); b.textContent=selected.size?`WYPEŁNIJ (${selected.size})`:"WYBIERZ DNI";
-    b.disabled=!selected.size; b.style.opacity=selected.size?1:.45;
+    const b=$("btnPrint");
+    b.textContent=selected.size?`WYPEŁNIJ (${selected.size})`:"WYBIERZ DNI";
+    b.style.opacity=selected.size?1:.45;
   }else{
     $("btnSelect").textContent="ZAZNACZ DNI";
-    const b=$("btnPrint"); b.textContent="DRUKUJ"; b.disabled=false; b.style.opacity=1;
+    const b=$("btnPrint"); b.textContent="DRUKUJ"; b.style.opacity=1;
   }
 }
 $("btnSelect").onclick=()=>{ selectMode=!selectMode; selected.clear(); render(); updateDock();
   if(selectMode) toast("Dotykaj dni, potem WYPEŁNIJ"); };
 $("btnPrint").onclick=()=>{
-  if(selectMode){ if(selected.size) openSheet([...selected]); }
+  if(selectMode){ if(selected.size) openDay([...selected]); }
   else $("dlgPrint").showModal();
 };
 
-/* ---------- ostatni wpis ---------- */
-function lastWork(beforeKey){
-  const keys=Object.keys(db.entries).filter(k=>db.entries[k].t==="w"&&k<beforeKey).sort();
-  return keys.length?db.entries[keys[keys.length-1]]:null;
+/* ---------- okno edycji ---------- */
+function setType(t){
+  type=t;
+  $("seg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
+  $("workBox").classList.toggle("hide",t!=="w");
+  recalc();
 }
+$("seg").querySelectorAll("button").forEach(b=>b.onclick=()=>setType(b.dataset.t));
 
-/* ---------- arkusz dnia ---------- */
-function openSheet(keys){
-  target=keys;
-  const multi=keys.length>1;
-  const d=new Date(keys[0]+"T12:00");
-  $("dlgTitle").textContent = multi ? `Zaznaczone dni: ${keys.length}` :
-    `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} · ${DOW[(d.getDay()+6)%7]}`;
-  $("dlgCap").textContent = multi ? "Wybrana opcja zostanie wpisana we wszystkie zaznaczone dni." : "Wybierz jedną z opcji.";
-
-  $("oUsualT").textContent=`Jak zwykle ${db.def.s}–${db.def.e}`;
-  $("oUsualS").textContent=db.def.p||"bez miejsca";
-  const lw=lastWork(keys[0]);
-  $("oLast").style.display=lw?"flex":"none";
-  if(lw) $("oLastS").textContent=`${lw.s}–${lw.e} · ${lw.p||"bez miejsca"}`;
-
-  $("optBox").classList.remove("hide");
-  $("manBox").classList.add("hide");
-  $("dayFoot").classList.remove("hide");
-  $("dlgDay").showModal();
+function recalc(){
+  if(type!=="w"||!target.length){ $("calc").textContent=""; return; }
+  const t=span($("fS").value,$("fE").value);
+  if(!t){ $("calc").textContent=""; return; }
+  const sp=split(t,dateOf(target[0]));
+  $("calc").innerHTML=hm(t)+" h"+(sp.ot?` · <b>nadgodziny ${hm(sp.ot)}</b>`:"");
 }
-function apply(fn,msg){
-  target.forEach(k=>fn(k));
-  save();
-  selectMode=false; selected.clear(); updateDock();
-  render(); $("dlgDay").close(); toast(msg);
-}
-$("oUsual").onclick=()=>apply(k=>db.entries[k]={t:"w",s:db.def.s,e:db.def.e,p:db.def.p},
-  target.length>1?`Wpisano w ${target.length} dni`:"Wpisano godziny");
-$("oLast").onclick=()=>{ const lw=lastWork(target[0]); if(!lw) return;
-  apply(k=>db.entries[k]={t:"w",s:lw.s,e:lw.e,p:lw.p}, "Skopiowano ostatni wpis"); };
-$("oU").onclick=()=>apply(k=>db.entries[k]={t:"u",s:"",e:"",p:""}, "Urlop zapisany");
-$("oC").onclick=()=>apply(k=>db.entries[k]={t:"c",s:"",e:"",p:""}, "Chorobowe zapisane");
-$("oClear").onclick=()=>apply(k=>delete db.entries[k], "Wyczyszczono");
-$("dayClose").onclick=()=>$("dlgDay").close();
-
-$("oManual").onclick=()=>{
-  const e=db.entries[target[0]]||{};
-  $("fS").value=e.s||db.def.s; $("fE").value=e.e||db.def.e;
-  pickedPlace=e.p||db.def.p||""; $("fP").value="";
-  chips($("chips"),pickedPlace,p=>{pickedPlace=p;$("fP").value="";});
-  $("optBox").classList.add("hide"); $("dayFoot").classList.add("hide");
-  $("manBox").classList.remove("hide");
-};
-$("manBack").onclick=()=>{ $("manBox").classList.add("hide");
-  $("optBox").classList.remove("hide"); $("dayFoot").classList.remove("hide"); };
-$("manSave").onclick=()=>{
-  const s=$("fS").value, e=$("fE").value, typed=$("fP").value.trim(), p=typed||pickedPlace;
-  if(typed && !db.places.includes(typed)) db.places.push(typed);
-  if(!s&&!e&&!p) apply(k=>delete db.entries[k],"Wyczyszczono");
-  else apply(k=>db.entries[k]={t:"w",s,e,p}, target.length>1?`Wpisano w ${target.length} dni`:"Zapisano");
-};
+$("fS").oninput=recalc; $("fE").oninput=recalc;
 
 function chips(box,current,onPick){
   box.innerHTML=db.places.map(p=>`<button class="chip${p===current?" on":""}" data-p="${esc(p)}">${esc(p)}</button>`).join("");
   box.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{ onPick(c.dataset.p); chips(box,c.dataset.p,onPick); });
 }
+function pickChip(p){ pickedPlace=p; $("fP").value=""; }
+
+function openDay(keys){
+  target=keys;
+  const multi=keys.length>1;
+  const d=dateOf(keys[0]);
+  const e=multi?null:db.entries[keys[0]];
+  const prev=lastEntry(keys[0]);
+
+  $("dlgTitle").textContent = multi ? `Zaznaczone dni: ${keys.length}`
+    : `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} · ${DOW[(d.getDay()+6)%7]}`;
+
+  if(multi) $("dlgCap").textContent="Zapis obejmie wszystkie zaznaczone dni.";
+  else if(e&&e.t==="w") $("dlgCap").textContent=`Wpisane: ${e.s}–${e.e} · ${e.p||"bez miejsca"}`;
+  else if(e&&e.t==="u") $("dlgCap").textContent="Wpisane: urlop";
+  else if(e&&e.t==="c") $("dlgCap").textContent="Wpisane: chorobowe";
+  else $("dlgCap").textContent="Dzień pusty.";
+
+  $("fS").value=(e&&e.s)||db.def.s;
+  $("fE").value=(e&&e.e)||db.def.e;
+  const place=(e&&e.p)||(prev&&prev.p)||db.def.p||"";
+  if(db.places.includes(place)){ pickedPlace=place; $("fP").value=""; }
+  else { pickedPlace=""; $("fP").value=place; }
+  chips($("chips"),pickedPlace,pickChip);
+  $("dayDel").classList.toggle("hide", !multi && !e);
+  setType((e&&e.t)||"w");
+  $("dlgDay").showModal();
+}
+$("fP").oninput=()=>{
+  if($("fP").value.trim()){ pickedPlace=""; chips($("chips"),"",pickChip); }
+};
+$("addToList").onclick=()=>{
+  const v=$("fP").value.trim();
+  if(!v) return toast("Najpierw wpisz nazwę");
+  if(db.places.includes(v)) return toast("Już jest na liście");
+  db.places.push(v); pickedPlace=v; $("fP").value=""; save();
+  chips($("chips"),v,pickChip);
+  toast("Dodano do listy");
+};
+$("daySave").onclick=()=>{
+  let val;
+  if(type==="w"){
+    const s=$("fS").value, e=$("fE").value, p=$("fP").value.trim()||pickedPlace;
+    if(!s||!e) return toast("Uzupełnij godziny");
+    val={t:"w",s,e,p};
+  }else val={t:type,s:"",e:"",p:""};
+  target.forEach(k=>db.entries[k]=Object.assign({},val));
+  save(); selectMode=false; selected.clear(); updateDock(); render();
+  $("dlgDay").close(); $("snack").classList.remove("on");
+  toast(target.length>1?`Zapisano ${target.length} dni`:"Zapisano");
+};
+$("dayDel").onclick=()=>{
+  target.forEach(k=>delete db.entries[k]);
+  save(); selectMode=false; selected.clear(); updateDock(); render();
+  $("dlgDay").close(); toast("Wyczyszczono");
+};
+$("dayCancel").onclick=()=>$("dlgDay").close();
 
 /* ---------- nadgodziny ---------- */
 $("mSum").onclick=()=>{
@@ -448,13 +517,12 @@ $("mSum").onclick=()=>{
     if(isWe(date)) otWe+=sp.ot; else otDay+=sp.ot;
     rows+=`<div style="display:flex;justify-content:space-between;padding:11px 2px;border-bottom:1px solid var(--hair)">
       <span><b>${pad(d)}.${pad(m+1)}</b> <span style="color:var(--muted)">${DOW[(date.getDay()+6)%7]} · ${e.s}–${e.e}</span></span>
-      <b style="color:#B98200">+${hm(sp.ot)}</b></div>`;
+      <b style="color:var(--ot)">+${hm(sp.ot)}</b></div>`;
   }
   $("otTitle").textContent=`Nadgodziny — ${MONTHS[m]} ${y}`;
-  $("otCap").innerHTML = ot
-    ? `Razem <b>${hm(ot)} h</b> ponad normę.` +
-      (otDay?` W dni robocze ${hm(otDay)}.`:"") + (otWe?` Weekendy ${hm(otWe)}.`:"") +
-      `<br>Godziny zwykłe: ${hm(norm)} · wszystkie: ${hm(tot)}`
+  $("otCap").innerHTML= ot
+    ? `Razem <b>${hm(ot)} h</b> ponad normę.`+(otDay?` W dni robocze ${hm(otDay)}.`:"")+(otWe?` Weekendy ${hm(otWe)}.`:"")
+      +`<br>Godziny zwykłe: ${hm(norm)} · wszystkie: ${hm(tot)}`
     : "W tym miesiącu nie ma nadgodzin.";
   $("otList").innerHTML=rows;
   $("dlgOt").showModal();
@@ -468,8 +536,8 @@ $("prGo").onclick=()=>{
   const y=view.getFullYear(), m=view.getMonth(), days=new Date(y,m+1,0).getDate();
   let rows="", total=0, totOt=0, wd=0, ud=0, cd=0, lp=0;
   for(let d=1;d<=days;d++){
-    const date=new Date(y,m,d), w=(date.getDay()+6)%7>=5, e=db.entries[key(date)];
-    let od="", doo="", g="", ot="", pl="";
+    const date=new Date(y,m,d), e=db.entries[key(date)];
+    let od="",doo="",g="",ot="",pl="";
     if(e&&e.t==="w"){
       od=roundT(e.s,step)||""; doo=roundT(e.e,step)||"";
       const t=span(od,doo);
@@ -479,12 +547,10 @@ $("prGo").onclick=()=>{
     else if(e&&e.t==="c"){ cd++; g="chorobowe"; pl="zwolnienie lekarskie"; }
     if(only && !e) continue;
     lp++;
-    rows+=`<tr class="${w?"we":""}"><td>${lp}</td><td>${pad(d)}.${pad(m+1)} ${DOW[(date.getDay()+6)%7]}</td>
+    rows+=`<tr class="${isWe(date)?"we":""}"><td>${lp}</td><td>${pad(d)}.${pad(m+1)} ${DOW[(date.getDay()+6)%7]}</td>
       <td>${od}</td><td>${doo}</td><td>${g}</td><td>${ot}</td><td>${esc(pl)}</td><td></td></tr>`;
   }
-  const extra=[ud?`urlop: ${ud} dni`:"", cd?`chorobowe: ${cd} dni`:"",
-    totOt?`nadgodziny: ponad ${db.ot.norm/60} h dziennie${db.ot.weekend?" oraz cały weekend":""}`:""]
-    .filter(Boolean).join(" · ");
+  const extra=[ud?`urlop: ${ud} dni`:"", cd?`chorobowe: ${cd} dni`:""].filter(Boolean).join(" · ");
   $("sheet").innerHTML=`<h2>EWIDENCJA CZASU PRACY</h2>
     <div class="meta"><div><b>Pracownik:</b> ${esc(db.name||".........................................")}</div>
     <div><b>Miesiąc:</b> ${MONTHS[m]} ${y}</div></div>
@@ -493,44 +559,45 @@ $("prGo").onclick=()=>{
     <tbody>${rows}</tbody><tfoot><tr><td colspan="4">RAZEM &nbsp; (dni przepracowanych: ${wd})</td>
     <td>${hm(total)}</td><td>${totOt?hm(totOt):""}</td>
     <td>${(total/60).toFixed(2)} h${totOt?` · nadg. ${(totOt/60).toFixed(2)} h`:""}</td><td></td></tr></tfoot></table>
-    ${extra?`<div class="note">${extra}</div>`:""}
-    ${step?`<div class="note">Godziny zaokrąglone do ${step} min.</div>`:""}`;
+    ${extra?`<div class="note">${extra}</div>`:""}`;
   $("dlgPrint").close();
   setTimeout(()=>window.print(),150);
 };
 
 /* ---------- ustawienia ---------- */
+function drawWk(){
+  $("fWkIco").textContent=db.ot.weekend?"✓":"✕";
+  $("fWkIco").className="ico"+(db.ot.weekend?"":" x");
+  $("fWkS").textContent=db.ot.weekend?"sobota i niedziela liczone w całości":"weekend liczony jak dzień roboczy";
+}
+$("fWk").onclick=()=>{ db.ot.weekend=!db.ot.weekend; drawWk(); };
+function cfgPickFn(p){ cfgPick=p; }
 $("btnCfg").onclick=()=>{
   $("fName").value=db.name; $("fDS").value=db.def.s; $("fDE").value=db.def.e;
-  cfgPick=db.def.p; chips($("cfgChips"),cfgPick,p=>{cfgPick=p;});
   $("fNorm").value=db.ot.norm/60; drawWk();
+  cfgPick=db.def.p; chips($("cfgChips"),cfgPick,cfgPickFn);
   $("fillMonthS").textContent=`${MONTHS[view.getMonth()]} ${view.getFullYear()} · ${db.def.s}–${db.def.e}`;
   $("dlgCfg").showModal();
 };
-function drawWk(){
-  $("fWkIco").textContent=db.ot.weekend?"✓":"✕";
-  $("fWkIco").className="ico "+(db.ot.weekend?"i-w":"i-x");
-  $("fWkS").textContent=db.ot.weekend
-    ? "sobota i niedziela liczone w całości"
-    : "weekend liczony tak jak dzień roboczy";
-}
-$("fWk").onclick=()=>{ db.ot.weekend=!db.ot.weekend; drawWk(); };
-
 function saveCfg(){
   db.name=$("fName").value.trim();
   const n=parseFloat($("fNorm").value);
-  db.ot.norm = n>0 ? Math.round(n*60) : 480;
+  db.ot.norm=n>0?Math.round(n*60):480;
   db.def={s:$("fDS").value||"07:00", e:$("fDE").value||"15:00", p:cfgPick||db.places[0]||""};
   save();
 }
 $("cfgClose").onclick=()=>{ saveCfg(); render(); $("dlgCfg").close(); };
-$("addPlace").onclick=()=>{ const v=prompt("Nazwa miejsca pracy:");
-  if(v&&v.trim()){ db.places.push(v.trim()); cfgPick=v.trim(); save(); chips($("cfgChips"),cfgPick,p=>{cfgPick=p;}); } };
+$("addPlace").onclick=()=>{
+  const v=prompt("Nazwa miejsca pracy:");
+  if(v&&v.trim()&&!db.places.includes(v.trim())){
+    db.places.push(v.trim()); cfgPick=v.trim(); save(); chips($("cfgChips"),cfgPick,cfgPickFn);
+  }
+};
 $("delPlace").onclick=()=>{
   if(!cfgPick) return toast("Najpierw dotknij miejsca");
   if(db.places.length<2) return toast("Musi zostać jedno miejsce");
   db.places=db.places.filter(p=>p!==cfgPick); cfgPick=db.places[0]; save();
-  chips($("cfgChips"),cfgPick,p=>{cfgPick=p;});
+  chips($("cfgChips"),cfgPick,cfgPickFn);
 };
 $("fillMonth").onclick=()=>{
   saveCfg();
@@ -538,8 +605,7 @@ $("fillMonth").onclick=()=>{
   let n=0;
   for(let d=1;d<=days;d++){
     const date=new Date(y,m,d), k=key(date);
-    if((date.getDay()+6)%7>=5) continue;
-    if(db.entries[k]) continue;
+    if(isWe(date)||db.entries[k]) continue;
     db.entries[k]={t:"w",s:db.def.s,e:db.def.e,p:db.def.p}; n++;
   }
   save(); render(); $("dlgCfg").close(); toast(`Uzupełniono ${n} dni`);
@@ -551,12 +617,14 @@ $("doExport").onclick=()=>{
   a.download="godziny-pracy-kopia.json"; a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),3000); toast("Kopia zapisana");
 };
+$("btnImport").onclick=()=>$("fImport").click();
 $("fImport").onchange=ev=>{
   const f=ev.target.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=()=>{ try{
       const o=JSON.parse(r.result);
-      db.name=o.name||""; db.places=o.places||db.places; db.def=o.def||db.def; db.entries=o.entries||{};
+      db.name=o.name||""; db.places=o.places||db.places; db.def=o.def||db.def;
+      db.ot=o.ot||db.ot; db.entries=o.entries||{};
       save(); load(); render(); $("dlgCfg").close(); toast("Wpisy wczytane");
     }catch(e){ toast("Nie udało się odczytać pliku"); } };
   r.readAsText(f);
@@ -566,9 +634,7 @@ $("fImport").onchange=ev=>{
 $("prev").onclick=()=>{ view=new Date(view.getFullYear(),view.getMonth()-1,1); selected.clear(); render(); updateDock(); };
 $("next").onclick=()=>{ view=new Date(view.getFullYear(),view.getMonth()+1,1); selected.clear(); render(); updateDock(); };
 load(); render(); updateDock();
-if("serviceWorker" in navigator){
-  navigator.serviceWorker.register("sw.js").then(r=>r.update()).catch(()=>{});
-}
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>
 </html>
